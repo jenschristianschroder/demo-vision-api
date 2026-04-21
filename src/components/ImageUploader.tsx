@@ -2,27 +2,22 @@ import React, { useRef, useState, useCallback } from 'react';
 import './ImageUploader.css';
 
 const CameraIcon: React.FC<{ size?: number }> = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15.586 5l-2-2H10.414l-2 2H5a2 2 0 00-2 2v11a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2h-3.414z" fill="#e0e0e0" />
-    <path d="M15.586 5l-2-2H10.414l-2 2H5a2 2 0 00-2 2v11a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2h-3.414zM4.5 7A.5.5 0 015 6.5h3.414a1 1 0 00.707-.293L10.914 4.5h2.172l1.793 1.707a1 1 0 00.707.293H19a.5.5 0 01.5.5v11a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V7z" fill="#111" />
-    <circle cx="12" cy="12.5" r="3.5" fill="#0078d4" opacity="0.85" />
-    <circle cx="12" cy="12.5" r="3.5" stroke="#111" strokeWidth="1.5" fill="none" />
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+    <circle cx="12" cy="13" r="4" />
   </svg>
 );
 
 const FolderIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 5a2 2 0 012-2h4.172a1 1 0 01.707.293L10.586 5H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" fill="#f9a825" opacity="0.7" />
-    <path d="M2 5a2 2 0 012-2h4.172a1 1 0 01.707.293L10.586 5H16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V5zM4 4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1V7a1 1 0 00-1-1h-5.414a1 1 0 01-.707-.293L8.172 4H4z" fill="#111" />
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
   </svg>
 );
 
 const CameraActionIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M13 4l-1.6-1.6A1 1 0 0010.7 2H9.3a1 1 0 00-.7.4L7 4H4a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-3z" fill="#e0e0e0" />
-    <path d="M13 4l-1.6-1.6A1 1 0 0010.7 2H9.3a1 1 0 00-.7.4L7 4H4a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-3zM4 5h3a1 1 0 00.7-.4L9.3 3h1.4l1.6 1.6a1 1 0 00.7.4h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z" fill="#111" />
-    <circle cx="10" cy="10.5" r="3" fill="#0078d4" opacity="0.85" />
-    <circle cx="10" cy="10.5" r="3" stroke="#111" strokeWidth="1.2" fill="none" />
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+    <circle cx="12" cy="13" r="4" />
   </svg>
 );
 
