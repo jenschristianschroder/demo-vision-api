@@ -4,12 +4,20 @@ param location string
 param environmentId string
 param imageName string
 param apiBackendUrl string
+param managedIdentityId string
+param acrLoginServer string
 param minReplicas int = 0
 param maxReplicas int = 3
 
 resource spaApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: name
   location: location
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentityId}': {}
+    }
+  }
   properties: {
     managedEnvironmentId: environmentId
     configuration: {
@@ -18,7 +26,12 @@ resource spaApp 'Microsoft.App/containerApps@2024-03-01' = {
         targetPort: 80
         transport: 'auto'
       }
-      registries: []
+      registries: [
+        {
+          server: acrLoginServer
+          identity: managedIdentityId
+        }
+      ]
     }
     template: {
       containers: [

@@ -62,6 +62,7 @@ module api 'modules/aca-api.bicep' = {
     managedIdentityId: identity.outputs.id
     managedIdentityClientId: identity.outputs.clientId
     visionEndpoint: visionEndpoint
+    acrLoginServer: acr.outputs.loginServer
   }
 }
 
@@ -73,6 +74,8 @@ module spa 'modules/aca-spa.bicep' = {
     environmentId: env.outputs.id
     imageName: spaImage
     apiBackendUrl: 'https://${api.outputs.fqdn}'
+    managedIdentityId: identity.outputs.id
+    acrLoginServer: acr.outputs.loginServer
   }
 }
 

@@ -6,6 +6,7 @@ param imageName string
 param managedIdentityId string
 param managedIdentityClientId string
 param visionEndpoint string
+param acrLoginServer string
 param minReplicas int = 1
 param maxReplicas int = 3
 
@@ -26,7 +27,12 @@ resource apiApp 'Microsoft.App/containerApps@2024-03-01' = {
         targetPort: 3001
         transport: 'auto'
       }
-      registries: []
+      registries: [
+        {
+          server: acrLoginServer
+          identity: managedIdentityId
+        }
+      ]
     }
     template: {
       containers: [
