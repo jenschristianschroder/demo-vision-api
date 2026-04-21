@@ -37,8 +37,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [preview, setPreview] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cameraActive, setCameraActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const processFile = useCallback(
     (file: File) => {
@@ -92,12 +95,89 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     return () => document.removeEventListener('paste', handlePaste);
   }, [handlePaste]);
 
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+    setCameraActive(false);
+  }, []);
+
+  const startCamera = useCallback(async () => {
+    setError(null);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
+      streamRef.current = stream;
+      setCameraActive(true);
+      // Wait for ref to be available after render
+      requestAnimationFrame(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      });
+    } catch {
+      // Fallback to file input with capture attribute on mobile
+      cameraInputRef.current?.click();
+    }
+  }, []);
+
+  const capturePhoto = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(video, 0, 0);
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+    setPreview(dataUrl);
+    const base64 = dataUrl.split(',')[1];
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+        onImageSelected(base64, file);
+      }
+    }, 'image/jpeg', 0.9);
+    stopCamera();
+  }, [onImageSelected, stopCamera]);
+
+  // Clean up camera on unmount
+  React.useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+      }
+    };
+  }, []);
+
   const clear = () => {
     setPreview(null);
     setError(null);
+    stopCamera();
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
+
+  if (cameraActive) {
+    return (
+      <div className="image-uploader">
+        <div className="camera-viewfinder">
+          <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', borderRadius: 8, display: 'block' }} />
+          <div className="upload-actions" style={{ marginTop: 8 }}>
+            <button className="upload-btn" onClick={capturePhoto}>
+              Capture
+            </button>
+            <button className="upload-btn" onClick={stopCamera}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (preview) {
     return (
@@ -130,7 +210,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           <FolderIcon /> Browse
         </button>
         {showCamera && (
-          <button className="upload-btn" onClick={() => cameraInputRef.current?.click()}>
+          <button className="upload-btn" onClick={startCamera}>
             <CameraActionIcon /> Camera
           </button>
         )}
