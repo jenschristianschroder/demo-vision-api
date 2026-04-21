@@ -2,11 +2,12 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ImageUploader from '../../components/ImageUploader';
 import { useVisionAnalysis } from '../../hooks/useVisionAnalysis';
 
+// Azure Vision API smart crop supports aspect ratios between 0.75 and 1.8 inclusive.
 const ASPECT_RATIOS = [
+  { label: '3:4', value: 0.75 },
   { label: '1:1', value: 1.0 },
-  { label: '16:9', value: 1.78 },
   { label: '4:3', value: 1.33 },
-  { label: '9:16', value: 0.56 },
+  { label: '16:9', value: 1.78 },
 ];
 
 const SmartCropDemo: React.FC = () => {
