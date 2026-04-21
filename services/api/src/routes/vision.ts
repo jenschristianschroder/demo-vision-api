@@ -5,6 +5,22 @@ import { isUnexpected } from '@azure-rest/ai-vision-image-analysis';
 
 const router = Router();
 
+// The Azure Vision API expects PascalCase feature names.
+// Map common camelCase variants sent by the frontend.
+const featureNameMap: Record<string, string> = {
+  caption: 'Caption',
+  densecaptions: 'DenseCaptions',
+  objects: 'Objects',
+  people: 'People',
+  read: 'Read',
+  smartcrops: 'SmartCrops',
+  tags: 'Tags',
+};
+
+function normalizeFeature(f: string): string {
+  return featureNameMap[f.toLowerCase()] ?? f;
+}
+
 interface AnalyzeRequest {
   image: string; // base64-encoded image
   features: string[];
@@ -23,12 +39,16 @@ router.post('/analyze', async (req: Request, res: Response) => {
     const imageBuffer = Buffer.from(image, 'base64');
     const client = getVisionClient();
 
+    const normalizedFeatures = features.map(normalizeFeature);
+
     const response = await client.path('/imageanalysis:analyze').post({
       body: imageBuffer,
       contentType: 'application/octet-stream',
       queryParameters: {
-        features: features,
-        'smartcrops-aspect-ratios': smartCropsAspectRatios,
+        features: normalizedFeatures,
+        ...(smartCropsAspectRatios?.length
+          ? { 'smartcrops-aspect-ratios': smartCropsAspectRatios }
+          : {}),
       },
     });
 
