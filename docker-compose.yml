@@ -1,0 +1,18 @@
+services:
+  vision-api-spa:
+    build: .
+    ports:
+      - "3000:80"
+    environment:
+      - API_BACKEND_URL=http://vision-api-api:3001
+    depends_on:
+      - vision-api-api
+
+  vision-api-api:
+    build: ./services/api
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - AZURE_VISION_ENDPOINT=${AZURE_VISION_ENDPOINT}
+      - CORS_ORIGIN=*

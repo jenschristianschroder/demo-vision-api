@@ -1,0 +1,11 @@
+.image-canvas-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.image-canvas-wrapper canvas {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
