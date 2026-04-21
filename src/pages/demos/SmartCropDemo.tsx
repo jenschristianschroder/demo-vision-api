@@ -144,6 +144,7 @@ const SmartCropDemo: React.FC = () => {
                       width: '100%',
                       height: '100%',
                       backgroundImage: `url(${imageSrc})`,
+                      backgroundRepeat: 'no-repeat',
                       backgroundPosition: `${(x / ((imgRef.current?.naturalWidth ?? 1) - w)) * 100}% ${(y / ((imgRef.current?.naturalHeight ?? 1) - h)) * 100}%`,
                       backgroundSize: `${((imgRef.current?.naturalWidth ?? 1) / w) * 100}%`,
                     }} />
