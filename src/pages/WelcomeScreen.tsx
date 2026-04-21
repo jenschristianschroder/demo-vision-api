@@ -7,11 +7,6 @@ const WelcomeScreen: React.FC = () => {
 
   return (
     <div className="welcome-container">
-      <img
-        src="/images/Microsoft-logo_rgb_c-gray.png"
-        alt="Microsoft"
-        className="welcome-logo"
-      />
       <h1 className="welcome-title">Vision API</h1>
       <p className="welcome-subtitle">
         Explore Azure AI Vision capabilities — from image captioning and OCR

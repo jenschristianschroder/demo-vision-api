@@ -8,9 +8,6 @@ const FeaturesScreen: React.FC = () => {
 
   return (
     <div className="features-container">
-      <button className="features-back" onClick={() => navigate('/')}>
-        ← Back
-      </button>
       <h1 className="features-title">Demos</h1>
       <p className="features-subtitle">Select a capability to explore</p>
       <div className="features-list">

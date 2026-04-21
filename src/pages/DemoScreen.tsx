@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FEATURES, VisionFeature } from '../types';
 import ImageCaptioningDemo from './demos/ImageCaptioningDemo';
 import DenseCaptionsDemo from './demos/DenseCaptionsDemo';
@@ -33,7 +33,6 @@ const DEMO_COMPONENTS: Record<VisionFeature, React.FC> = {
 };
 
 const DemoScreen: React.FC = () => {
-  const navigate = useNavigate();
   const { feature } = useParams<{ feature: string }>();
   const featureInfo = FEATURES.find((f) => f.id === feature);
   const DemoComponent = feature ? DEMO_COMPONENTS[feature as VisionFeature] : undefined;
@@ -41,7 +40,6 @@ const DemoScreen: React.FC = () => {
   if (!featureInfo || !DemoComponent) {
     return (
       <div className="demo-container">
-        <button className="demo-back" onClick={() => navigate('/features')}>←</button>
         <p>Demo not found.</p>
       </div>
     );
@@ -50,7 +48,6 @@ const DemoScreen: React.FC = () => {
   return (
     <div className="demo-container">
       <div className="demo-header">
-        <button className="demo-back" onClick={() => navigate('/features')}>←</button>
         <h1 className="demo-title">{featureInfo.label}</h1>
       </div>
       <p className="demo-description">{featureInfo.description}</p>
